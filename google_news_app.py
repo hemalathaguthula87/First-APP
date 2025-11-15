@@ -1,17 +1,18 @@
 import streamlit as st
 import feedparser
 
-st.set_page_config(page_title="Google News Fetcher", page_icon="📰")
-st.title("📰 Google News Fetcher")
+st.set_page_config(page_title="Live Google News", page_icon="📰")
+st.title("📰 Live Google News App")
 
-st.write("Get live news headlines from Google News using RSS feeds.")
+st.write("Get the latest news headlines from Google News using RSS feeds.")
 
 # User input
 topic = st.text_input("Enter a topic (e.g., technology, sports, India)")
 
 if st.button("Fetch News"):
     if topic.strip():
-        url = f"https://news.google.com/rss/search?q={topic.replace(' ', '+')}"
+        # Google News RSS feed URL
+        url = f"https://news.google.com/rss/search?q={topic.replace(' ', '+')}&hl=en-US&gl=US&ceid=US:en"
         
         # Parse RSS feed
         feed = feedparser.parse(url)
@@ -22,10 +23,10 @@ if st.button("Fetch News"):
             st.success(f"Showing latest news for: {topic}")
             st.write("---")
             
-            for article in feed.entries[:10]:  # show top 10 results
+            for article in feed.entries[:10]:  # top 10 results
                 st.subheader(article.title)
-                st.write(article.published)
-                st.write(article.link)
+                st.write(f"🗓 Published: {article.published}")
+                st.write(f"🔗 [Read more]({article.link})")
                 st.write("---")
     else:
-        st.warning("Please type a topic.")
+        st.warning("Please enter a topic.")
